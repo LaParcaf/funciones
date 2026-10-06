@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15 Funciones JS - Sam</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>🛠️ Panel de 15 Funciones JS</h1>
+        <p class="selector-label">Selecciona una función:</p>
+
+        <select id="selectorFuncion" onchange="cargarFuncion(this.value)">
+            <option value="">-- Selecciona una opción --</option>
+            <option value="f01_suma">1. Suma de dos números</option>
+            <option value="f02_par_impar">2. Par o Impar</option>
+            <option value="f03_contador">3. Contador (+ / -)</option>
+            <option value="f04_cambio_color">4. Cambiar Color Fondo</option>
+            <option value="f05_saludo">5. Saludo Personalizado</option>
+            <option value="f06_mayor_edad">6. Mayor de Edad</option>
+            <option value="f07_dias_semana">7. Día de la Semana</option>
+            <option value="f08_temperatura">8. Convertir Temperatura</option>
+            <option value="f09_tabla_multiplicar">9. Tabla de Multiplicar</option>
+            <option value="f10_piedra_papel_tijera">10. Piedra, Papel o Tijera</option>
+            <option value="f11_adivina_numero">11. Adivina el Número</option>
+            <option value="f12_calculadora_propina">12. Calculadora de Propina</option>
+            <option value="f13_generar_password">13. Generar Contraseña</option>
+            <option value="f14_reloj">14. Reloj Digital</option>
+            <option value="f15_lista_compras">15. Lista de Compras</option>
+        </select>
+
+        <div id="resultado">
+            <p class="placeholder">El resultado aparecerá aquí...</p>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales compartidas entre funciones
+        window.relojInterval = null;
+        let scriptActual = null;
+
+        function cargarFuncion(nombre) {
+            const resDiv = document.getElementById("resultado");
+
+            // Limpiar intervalo anterior si existe
+            if (window.relojInterval) clearInterval(window.relojInterval);
+            window.relojInterval = null;
+
+            // Eliminar script anterior para evitar mantener referencias innecesarias
+            if (scriptActual && scriptActual.parentNode) {
+                scriptActual.parentNode.removeChild(scriptActual);
+            }
+
+            // Si no seleccionó nada
+            if (!nombre) {
+                resDiv.innerHTML = '<p class="placeholder">El resultado aparecerá aquí...</p>';
+                return;
+            }
+
+            // Mostrar "Cargando..."
+            resDiv.innerHTML = '<p class="placeholder">Cargando función...</p>';
+
+            // Crear y cargar el nuevo script
+            scriptActual = document.createElement('script');
+            scriptActual.type = 'module';
+            scriptActual.src = 'js/js/' + nombre + '.js?' + Date.now();
+            scriptActual.onerror = function () {
+                resDiv.innerHTML = '<p class="error-msg">❌ Error: No se encontró <strong>' + nombre + '.js</strong></p>';
+            };
+            document.body.appendChild(scriptActual);
+        }
+
+    </script>
+</body>
+</html>
